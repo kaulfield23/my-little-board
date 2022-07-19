@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import type { NextPage } from "next";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -10,9 +10,22 @@ const Login: NextPage = () => {
   const [isMember, setIsMember] = useState<boolean>(true);
   const [userId, setUserId] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
-  console.log(userId, userPassword, "ye");
 
   const textFieldValue = ["Account", "Password"];
+
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
+    const res = await fetch(`/api/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId,
+        userPassword,
+      }),
+    });
+  };
   return (
     <>
       {isMember && (
@@ -64,6 +77,14 @@ const Login: NextPage = () => {
               />
             );
           })}
+          <Button
+            variant="contained"
+            color="warning"
+            sx={{ mt: 3 }}
+            onClick={handleLogin}
+          >
+            Log in
+          </Button>
           <Box
             sx={{
               display: "flex",
