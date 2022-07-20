@@ -21,13 +21,23 @@ export default async function signUpHandler(
     port: 1337,
   });
   await client.connect();
+  //search if user's id already exists in database
+  const isSame = "SELECT * FROM useraccounts WHERE userid=$1";
+  const searchUserId = new Query(isSame, [userId]);
+  const isExists = await client.execute(searchUserId);
 
-  const queryString = `INSERT INTO useraccounts(userid, userPassword, firstName,lastName) VALUES($1,$2,$3,$4);`;
-  const query = new Query(queryString, [userId, hash, firstName, lastName]);
+  if (isExists.status === "SELECT 0") {
+    //when it doesn't exist
+    const queryString = `INSERT INTO useraccounts(userid, userPassword, firstName,lastName) VALUES($1,$2,$3,$4);`;
+    const query = new Query(queryString, [userId, hash, firstName, lastName]);
 
-  client.execute(query);
+    client.execute(query);
 
-  const result = await client.query("SELECT * FROM useraccounts");
-  console.log(result, "result");
-  res.status(200).json({ name: "John Doe" });
+    return res.status(200).end();
+  } else if (isExists.status !== "SELECT 0") {
+    //when userid already exists
+    return res.status(409).end();
+  } else {
+    return res.status(400).end();
+  }
 }

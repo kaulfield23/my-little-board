@@ -1,4 +1,11 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Button,
+  TextField,
+  Typography,
+} from "@mui/material";
 import React, {
   Dispatch,
   FC,
@@ -16,6 +23,7 @@ const Register: FC<RegisterType> = ({ isMember }) => {
   const [lastName, setLastName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [userId, setUserId] = useState("");
+  const [msg, setMsg] = useState("");
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -29,9 +37,33 @@ const Register: FC<RegisterType> = ({ isMember }) => {
         lastName,
       }),
     });
+    if (res.status === 409) {
+      setMsg("sameId");
+      const timer = setTimeout(() => {
+        setMsg("");
+      }, 5000);
+    } else if (res.status === 200) {
+      setMsg("accepted");
+    } else {
+    }
   };
   return (
     <>
+      {msg === "sameId" && (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          The ID already exists! — <strong>Please try another ID</strong>
+        </Alert>
+      )}
+      {msg === "accepted" && (
+        <Box sx={{ position: "absolute" }}>
+          <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            The ID already exists! — <strong>Please try another ID</strong>
+          </Alert>
+        </Box>
+      )}
+
       <Box
         sx={{
           margin: { xs: "130px 0 0 0", md: "200px 0 0 0" },
