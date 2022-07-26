@@ -13,6 +13,7 @@ import React, {
   SetStateAction,
   useState,
 } from "react";
+import LoggedInModal from "./LoggedInModal";
 
 type RegisterType = {
   isMember: Dispatch<SetStateAction<boolean>>;
@@ -45,6 +46,7 @@ const Register: FC<RegisterType> = ({ isMember }) => {
     } else if (res.status === 200) {
       setMsg("accepted");
     } else {
+      throw new Error("error");
     }
   };
   return (
@@ -55,14 +57,7 @@ const Register: FC<RegisterType> = ({ isMember }) => {
           The ID already exists! — <strong>Please try another ID</strong>
         </Alert>
       )}
-      {msg === "accepted" && (
-        <Box sx={{ position: "absolute" }}>
-          <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            The ID already exists! — <strong>Please try another ID</strong>
-          </Alert>
-        </Box>
-      )}
+      {msg === "accepted" && <LoggedInModal isMember={isMember} />}
 
       <Box
         sx={{
@@ -144,10 +139,7 @@ const Register: FC<RegisterType> = ({ isMember }) => {
       </Box>
       <Box sx={{ textAlign: "center", mt: 3 }} className="enooo">
         <Button
-          onClick={
-            handleRegister
-            // isMember(true);
-          }
+          onClick={handleRegister}
           variant="contained"
           color="warning"
           sx={{
