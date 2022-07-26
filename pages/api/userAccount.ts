@@ -19,7 +19,7 @@ export default async function signUpHandler(
   // //search if user's id already exists in database
   const query = "SELECT * FROM useraccounts WHERE userid=$1";
   const isExists = await dataAccountSearch(query, userId);
-  // console.log(isExists, "eng???????e");
+  console.log(isExists, "eng???????e");
   if (isExists?.status === "SELECT 0") {
     //when it doesn't exist
     console.log("hello????");

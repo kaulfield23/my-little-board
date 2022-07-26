@@ -1,5 +1,4 @@
 import { Client, Query } from "ts-postgres";
-
 import { createPool } from "generic-pool";
 
 const pool = createPool(
@@ -25,16 +24,14 @@ const pool = createPool(
   { testOnBorrow: true }
 );
 
-const client = new Client({
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASS,
-  port: 1337,
-});
-
 export const dataAccountSearch = async (query: string, userId: string) => {
   try {
+    const client = await pool.acquire();
     const searchedUserId = new Query(query, [userId]);
     const selectedUserId = await client.execute(searchedUserId);
+
+    await pool.release(client);
+
     return selectedUserId;
   } catch (err) {
     console.log(err);
@@ -55,9 +52,10 @@ export const saveAccount = async (
       firstName,
       lastName,
     ]);
-    console.log(savingAccountQuery, "whattt");
 
-    client.execute(savingAccountQuery);
+    const client = await pool.acquire();
+    await client.execute(savingAccountQuery);
+    await pool.release(client);
   } catch (err) {
     console.log(err);
   }
