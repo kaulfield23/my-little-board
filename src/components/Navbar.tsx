@@ -16,7 +16,6 @@ const Navbar = () => {
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
             <Typography
-              variant="h6"
               noWrap
               component="a"
               href="/"
@@ -27,6 +26,7 @@ const Navbar = () => {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
+                fontSize: { xs: "1rem", md: "1.5rem" },
               }}
             >
               My little board
@@ -42,10 +42,10 @@ const Navbar = () => {
                       fontFamily: "monospace",
                       fontWeight: 700,
                       color: "inherit",
+                      fontSize: { xs: "1rem", md: "1.5rem" },
                     }}
                     component="a"
                     href="/login"
-                    variant="h6"
                   >
                     Log in
                   </Typography>
