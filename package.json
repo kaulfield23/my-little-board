@@ -11,6 +11,7 @@
     "dependencies": {
         "@emotion/react": "^11.9.3",
         "@emotion/styled": "^11.9.3",
+        "@hapi/iron": "^7.0.0",
         "@mui/icons-material": "^5.8.4",
         "@mui/material": "^5.9.0",
         "bcrypt": "^5.0.1",
