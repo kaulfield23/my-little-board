@@ -3,6 +3,7 @@ import {
   AlertTitle,
   Box,
   Button,
+  FormGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -61,7 +62,7 @@ const Register: FC<RegisterType> = ({ isMember }) => {
 
       <Box
         sx={{
-          margin: { xs: "130px 0 0 0", md: "200px 0 0 0" },
+          margin: { xs: "130px 0 0 0", md: "100px 0 0 0" },
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
@@ -89,18 +90,20 @@ const Register: FC<RegisterType> = ({ isMember }) => {
             flexDirection: "column",
           }}
         >
-          <Typography>Create Account</Typography>
+          <Typography sx={{ mb: 2 }}>Create Account</Typography>
           <Box
-            sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
+            sx={{ display: "flex", flexDirection: "column" }}
+            component="form"
           >
             <TextField
               id="outlined-ID"
               label="ID"
               color="warning"
-              sx={{ mr: { md: 1 }, mb: { xs: 1 } }}
+              sx={{ mb: 1, width: { xs: "280px", md: "500px" } }}
               onChange={(e) => {
                 setUserId(e.target.value);
               }}
+              required
             />
             <TextField
               id="outlined-password"
@@ -109,45 +112,39 @@ const Register: FC<RegisterType> = ({ isMember }) => {
               onChange={(e) => {
                 setUserPassword(e.target.value);
               }}
+              required
             />
-          </Box>
-        </Box>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography>Personal Information</Typography>
-          <Box
-            sx={{ display: "flex", flexDirection: { xs: "column", md: "row" } }}
-          >
+            <Typography sx={{ mt: 2, mb: 2 }}>Personal Information</Typography>
             <TextField
               label="First Name"
               variant="filled"
               color="success"
-              sx={{ mr: { md: 1 }, mb: { xs: 1 } }}
+              sx={{ mb: 1 }}
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
+              required
             />
             <TextField
               label="Last Name"
               variant="filled"
               color="success"
+              required
               onChange={(e) => {
                 setLastName(e.target.value);
               }}
             />
+            <Button
+              variant="contained"
+              color="warning"
+              type="submit"
+              sx={{ mt: 2, backgroundColor: "#583333" }}
+              onClick={handleRegister}
+            >
+              Sign up
+            </Button>
           </Box>
         </Box>
-      </Box>
-      <Box sx={{ textAlign: "center", mt: 3 }} className="enooo">
-        <Button
-          onClick={handleRegister}
-          variant="contained"
-          color="warning"
-          sx={{
-            backgroundColor: "#583333",
-          }}
-        >
-          Sign up
-        </Button>
       </Box>
     </>
   );

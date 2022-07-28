@@ -6,10 +6,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import type { NextPage } from "next";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import { useContext } from "react";
+import { LoggedInContext } from "./context/LoggedInContext";
 
 const Navbar = () => {
+  const { isLoggedIn } = useContext(LoggedInContext);
+  console.log(isLoggedIn, "what");
   return (
     <>
       <AppBar position="static" sx={{ backgroundColor: "#f89955" }}>
@@ -45,9 +48,9 @@ const Navbar = () => {
                       fontSize: { xs: "1rem", md: "1.5rem" },
                     }}
                     component="a"
-                    href="/login"
+                    href={isLoggedIn ? "/profile" : "/login"}
                   >
-                    Log in
+                    {isLoggedIn ? "Profile" : "Log in"}
                   </Typography>
                 </IconButton>
               </Tooltip>
