@@ -4,16 +4,22 @@ import {
   Toolbar,
   Tooltip,
   Typography,
+  useRadioGroup,
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LoggedInContext } from "./context/LoggedInContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { dataAccountSearch } from "../util/dataSearch";
 
 const Navbar = () => {
-  const { isLoggedIn, changeLoggedInState } = useContext(LoggedInContext);
+  const { isLoggedIn, userId, changeLoggedInState } =
+    useContext(LoggedInContext);
+  // const [userName, setUserName] = useState("");
+  const [avatarColor, setAvatarColor] = useState("");
+
   const router = useRouter();
   const handleLogOut = async () => {
     const res = await fetch("/api/logout", {
@@ -21,12 +27,24 @@ const Navbar = () => {
       headers: { "Content-Type": "application/json" },
     });
     if (res.status === 200) {
-      changeLoggedInState(false);
+      changeLoggedInState(false, "");
       router.push("/");
     } else {
       alert("log out error! try again");
     }
   };
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const query = "SELECT * FROM useraccounts WHERE userid=$1";
+      const res = await fetch(`/api/userInfo?query=${query}&userId=${userId}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+    };
+
+    getUserInfo();
+  }, [isLoggedIn, userId]);
+
   return (
     <>
       <AppBar position="static" sx={{ backgroundColor: "#f89955" }}>

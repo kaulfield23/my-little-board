@@ -43,7 +43,8 @@ export const saveAccount = async (
   userId: string,
   hash: string,
   firstName: string,
-  lastName: string
+  lastName: string,
+  avatar: string
 ) => {
   try {
     const savingAccountQuery = new Query(query, [
@@ -51,9 +52,8 @@ export const saveAccount = async (
       hash,
       firstName,
       lastName,
+      avatar,
     ]);
-    console.log(savingAccountQuery);
-
     const client = await pool.acquire();
     await client.execute(savingAccountQuery);
     await pool.release(client);
