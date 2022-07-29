@@ -158,7 +158,7 @@ const Login: NextPage = () => {
           </Box>
         </Box>
       )}
-      {!isMember && <Register isMember={setIsMember} />}
+      {!isMember && <Register handleBack={setIsMember} />}
     </>
   );
 };

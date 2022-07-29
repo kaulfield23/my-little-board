@@ -15,12 +15,13 @@ import React, {
   useState,
 } from "react";
 import LoggedInModal from "./LoggedInModal";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 type RegisterType = {
-  isMember: Dispatch<SetStateAction<boolean>>;
+  handleBack: Dispatch<SetStateAction<boolean>>;
 };
 
-const Register: FC<RegisterType> = ({ isMember }) => {
+const Register: FC<RegisterType> = ({ handleBack }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userPassword, setUserPassword] = useState("");
@@ -52,17 +53,28 @@ const Register: FC<RegisterType> = ({ isMember }) => {
   };
   return (
     <>
+      <ArrowCircleLeftIcon
+        sx={{
+          cursor: "pointer",
+          fontSize: "3rem",
+          m: 3,
+          color: "orange",
+        }}
+        onClick={() => {
+          handleBack(true);
+        }}
+      />
       {msg === "sameId" && (
         <Alert severity="warning">
           <AlertTitle>Warning</AlertTitle>
           The ID already exists! — <strong>Please try another ID</strong>
         </Alert>
       )}
-      {msg === "accepted" && <LoggedInModal isMember={isMember} />}
+      {msg === "accepted" && <LoggedInModal isMember={handleBack} />}
 
       <Box
         sx={{
-          margin: { xs: "130px 0 0 0", md: "100px 0 0 0" },
+          margin: { xs: "100px 0 0 0", md: "70px 0 0 0" },
           display: "flex",
           justifyContent: "center",
           flexDirection: "column",
