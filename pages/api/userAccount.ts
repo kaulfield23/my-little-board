@@ -23,22 +23,9 @@ export default async function signUpHandler(
   if (isExists?.status === "SELECT 0") {
     //when it doesn't exist
     console.log("hello????");
-    // const client = new Client({
-    //   user: process.env.POSTGRES_USER,
-    //   password: process.env.POSTGRES_PASS,
-    //   port: 1337,
-    // });
-    // await client.connect();
+
     const queryString = `INSERT INTO useraccounts(userid, userPassword, firstName,lastName) VALUES($1,$2,$3,$4);`;
     saveAccount(queryString, userId, hash, firstName, lastName);
-    // const savingAccountQuery = new Query(queryString, [
-    //   userId,
-    //   hash,
-    //   firstName,
-    //   lastName,
-    // ]);
-    // client.execute(savingAccountQuery);
-
     return res.status(200).end();
   } else if (isExists?.status !== "SELECT 0") {
     //when userid already exists

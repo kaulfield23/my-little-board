@@ -52,6 +52,7 @@ export const saveAccount = async (
       firstName,
       lastName,
     ]);
+    console.log(savingAccountQuery);
 
     const client = await pool.acquire();
     await client.execute(savingAccountQuery);
