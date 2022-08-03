@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -9,11 +9,9 @@ import Collapse from "@mui/material/Collapse";
 import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { LoggedInContext } from "./context/LoggedInContext";
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -30,6 +28,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const Board = () => {
   const [expanded, setExpanded] = useState(false);
+  const { userAvatarColor, userId } = useContext(LoggedInContext);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -38,8 +37,8 @@ const Board = () => {
     <Card sx={{ maxWidth: 345, margin: "100px auto" }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            R
+          <Avatar sx={{ bgcolor: `${userAvatarColor}` }} aria-label="post">
+            {userId.charAt(0)}
           </Avatar>
         }
         title="Hello world"
@@ -48,7 +47,7 @@ const Board = () => {
       <CardMedia
         component="img"
         height="194"
-        image="/static/images/cards/paella.jpg"
+        // image="/static/images/cards/paella.jpg"
         alt="Paella dish"
       />
       <CardContent>

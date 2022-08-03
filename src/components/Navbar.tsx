@@ -12,12 +12,10 @@ import { useContext, useEffect, useState } from "react";
 import { LoggedInContext } from "./context/LoggedInContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { dataAccountSearch } from "../util/dataSearch";
 
 const Navbar = () => {
-  const { isLoggedIn, userId, changeLoggedInState } =
+  const { isLoggedIn, userId, changeLoggedInState, userAvatarColor } =
     useContext(LoggedInContext);
-  // const [userName, setUserName] = useState("");
   const [avatarColor, setAvatarColor] = useState("");
 
   const router = useRouter();
@@ -27,7 +25,7 @@ const Navbar = () => {
       headers: { "Content-Type": "application/json" },
     });
     if (res.status === 200) {
-      changeLoggedInState(false, "");
+      changeLoggedInState(false, "", "");
       router.push("/");
     } else {
       alert("log out error! try again");
@@ -35,15 +33,21 @@ const Navbar = () => {
   };
   useEffect(() => {
     const getUserInfo = async () => {
-      const query = "SELECT * FROM useraccounts WHERE userid=$1";
-      const res = await fetch(`/api/userInfo?query=${query}&userId=${userId}`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      if (userId) {
+        const res = await fetch(`/api/userInfo?userId=${userId}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (res.status === 200) {
+          const specificID = await res.json();
+          // setAvatarColor(specificID.avatarColor);
+          changeLoggedInState(true, userId, specificID.avatarColor);
+        }
+      }
     };
 
     getUserInfo();
-  }, [isLoggedIn, userId]);
+  }, [isLoggedIn, userId, changeLoggedInState]);
 
   return (
     <>
@@ -72,7 +76,9 @@ const Navbar = () => {
             <Box sx={{ flexGrow: 0, display: "flex" }}>
               <Tooltip title={isLoggedIn ? "Profile" : "Log in"}>
                 <IconButton sx={{ p: 0 }}>
-                  <AccountCircle />
+                  <AccountCircle
+                    sx={{ color: isLoggedIn ? `${userAvatarColor}` : "white" }}
+                  />
                   <Link href={isLoggedIn ? "/profile" : "/login"}>
                     <Typography
                       sx={{
@@ -84,7 +90,7 @@ const Navbar = () => {
                       }}
                       component="a"
                     >
-                      {isLoggedIn ? "Profile" : "Log in"}
+                      {isLoggedIn ? `${userId}` : "Log in"}
                     </Typography>
                   </Link>
                 </IconButton>
