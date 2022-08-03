@@ -46,7 +46,7 @@ const Login: NextPage = () => {
     });
 
     if (res.status === 200) {
-      changeLoggedInState(true);
+      changeLoggedInState(true, userId, "");
     } else if (res.status === 401) {
       handleError("not accepted");
     } else {

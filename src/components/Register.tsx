@@ -28,8 +28,23 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
   const [userId, setUserId] = useState("");
   const [msg, setMsg] = useState("");
 
+  const randomColors = [
+    "#dd7773",
+    "#d16282",
+    "#b95694",
+    "#9152a5",
+    "#5154b0",
+    "#78b171",
+    "#4452c6",
+    "#ff868f",
+    "#a19ae4",
+    "#00bdae",
+  ];
+
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
+    const avatar = randomColors[Math.floor(Math.random() * 10)];
+
     const res = await fetch(`/api/userAccount`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,6 +53,7 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
         userPassword,
         firstName,
         lastName,
+        avatar,
       }),
     });
     if (res.status === 409) {
@@ -53,6 +69,13 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
   };
   return (
     <>
+      {msg === "sameId" && (
+        <Alert severity="warning">
+          <AlertTitle>Warning</AlertTitle>
+          The ID already exists! — <strong>Please try another ID</strong>
+        </Alert>
+      )}
+      {msg === "accepted" && <LoggedInModal isMember={handleBack} />}
       <ArrowCircleLeftIcon
         sx={{
           cursor: "pointer",
@@ -64,13 +87,6 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
           handleBack(true);
         }}
       />
-      {msg === "sameId" && (
-        <Alert severity="warning">
-          <AlertTitle>Warning</AlertTitle>
-          The ID already exists! — <strong>Please try another ID</strong>
-        </Alert>
-      )}
-      {msg === "accepted" && <LoggedInModal isMember={handleBack} />}
 
       <Box
         sx={{
