@@ -22,7 +22,6 @@ const LoggedInProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
     userId: string,
     color: string
   ) => {
-    console.log(color, "colorrrreee");
     setLoggedIn(value);
     setUserId(userId);
     setUserAvatarColor(color);

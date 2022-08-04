@@ -34,13 +34,13 @@ const Navbar = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       if (userId) {
+        console.log("navbar userinfo triggered");
         const res = await fetch(`/api/userInfo?userId=${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
         if (res.status === 200) {
           const specificID = await res.json();
-          // setAvatarColor(specificID.avatarColor);
           changeLoggedInState(true, userId, specificID.avatarColor);
         }
       }
