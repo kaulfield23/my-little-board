@@ -13,8 +13,6 @@ export default async function loginHandler(
 
     if (selectedID !== undefined) {
       if (selectedID.status !== "SELECT 0") {
-        console.log(selectedID, "ididid");
-        console.log(selectedID.rows[0][3], "testtesttest");
         res.json({
           firstName: selectedID.rows[0][3],
           lastName: selectedID.rows[0][4],
@@ -22,6 +20,10 @@ export default async function loginHandler(
         });
         res.status(200).end();
       }
+    } else {
+      res.status(401).end();
     }
+  } else {
+    res.status(400).end();
   }
 }
