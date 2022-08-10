@@ -1,6 +1,7 @@
 import { Client, Query } from "ts-postgres";
 import { createPool } from "generic-pool";
 
+console.log(process.env.POSTGRES_USER);
 const pool = createPool(
   {
     create: async () => {
@@ -27,11 +28,10 @@ const pool = createPool(
 export const dataAccountSearch = async (query: string, userId: string) => {
   try {
     const client = await pool.acquire();
+
     const searchedUserId = new Query(query, [userId]);
     const selectedUserId = await client.execute(searchedUserId);
-
     await pool.release(client);
-
     return selectedUserId;
   } catch (err) {
     console.log(err);
@@ -57,6 +57,20 @@ export const saveAccount = async (
     const client = await pool.acquire();
     await client.execute(savingAccountQuery);
     await pool.release(client);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const execQuery = async (query: string) => {
+  try {
+    const client = await pool.acquire();
+
+    const searching = new Query(query);
+
+    const result = await client.execute(searching);
+    await pool.release(client);
+    return result;
   } catch (err) {
     console.log(err);
   }
