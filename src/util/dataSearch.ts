@@ -8,7 +8,7 @@ const pool = createPool(
       const client = new Client({
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASS,
-        port: 5432,
+        port: 1337,
       });
       return client.connect().then(() => {
         client.on("error", console.log);
@@ -54,7 +54,6 @@ export const saveAccount = async (
       lastName,
       avatar,
     ]);
-    console.log(userId, hash, firstName, "whoYYY?");
     const client = await pool.acquire();
     await client.execute(savingAccountQuery);
     await pool.release(client);
@@ -63,13 +62,15 @@ export const saveAccount = async (
   }
 };
 
-export const checkTableExists = async (query: string) => {
+export const execQuery = async (query: string) => {
   try {
     const client = await pool.acquire();
 
     const searching = new Query(query);
 
-    await client.execute(searching);
+    const result = await client.execute(searching);
+    await pool.release(client);
+    return result;
   } catch (err) {
     console.log(err);
   }
