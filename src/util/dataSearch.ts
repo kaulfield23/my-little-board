@@ -1,14 +1,13 @@
 import { Client, Query } from "ts-postgres";
 import { createPool } from "generic-pool";
 
-console.log(process.env.POSTGRES_USER);
 const pool = createPool(
   {
     create: async () => {
       const client = new Client({
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASS,
-        port: 1337,
+        port: 5432,
       });
       return client.connect().then(() => {
         client.on("error", console.log);
