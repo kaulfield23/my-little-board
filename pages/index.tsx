@@ -10,7 +10,6 @@ const Home: NextPage = () => {
 
   return (
     <>
-      {isLoggedIn && <Board />}
       {!isLoggedIn && (
         <Box
           sx={{

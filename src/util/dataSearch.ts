@@ -8,7 +8,7 @@ const pool = createPool(
       const client = new Client({
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASS,
-        port: 1337,
+        port: 5432,
       });
       return client.connect().then(() => {
         client.on("error", console.log);

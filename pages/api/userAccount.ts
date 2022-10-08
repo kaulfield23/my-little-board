@@ -17,7 +17,7 @@ export default async function signUpHandler(
 
   //create table when there is no table
   const createTableQuery =
-    "CREATE TABLE IF NOT EXISTS useraccounts(id serial PRIMARY KEY, userId TEXT, userPassword TEXT, firstName TEXT, lastName TEXT, avatar TEXT);";
+    "CREATE TABLE IF NOT EXISTS useraccounts(id serial PRIMARY KEY, userId TEXT, userPassword TEXT, firstName TEXT, lastName TEXT, avatar TEXT, UNIQUE(userId));";
   await execQuery(createTableQuery);
 
   const rowExistsQuery = "SELECT EXISTS(SELECT * FROM useraccounts)";
