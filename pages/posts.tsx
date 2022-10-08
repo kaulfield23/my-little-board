@@ -1,11 +1,13 @@
-import { Avatar, TextField, Typography } from "@mui/material";
+import { Avatar, Button, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { NextPage } from "next";
 import React, { useContext, useEffect, useState } from "react";
 import { LoggedInContext } from "../src/components/context/LoggedInContext";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
+import Board from "../src/components/Board";
 const Posts: NextPage = () => {
   const { userId, isLoggedIn } = useContext(LoggedInContext);
+  const [isContent, setIsContent] = useState(false);
   const [userInformation, setUserInformation] = useState({
     firstName: "",
     lastName: "",
@@ -14,9 +16,16 @@ const Posts: NextPage = () => {
   useEffect(() => {
     const getInfo = async () => {
       const res = await fetch(`/api/posts`, {
-        method: "GET",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId,
+        }),
       });
+      console.log(res.status);
+      if (res.status === 200) {
+        setIsContent(true);
+      }
     };
 
     getInfo();
@@ -24,7 +33,7 @@ const Posts: NextPage = () => {
 
   return (
     <>
-      {isLoggedIn && (
+      {isLoggedIn && !isContent && (
         <Box
           sx={{
             display: "flex",
@@ -54,8 +63,17 @@ const Posts: NextPage = () => {
             minRows={10}
             placeholder="Content"
           />
+          <Button
+            type="submit"
+            variant="contained"
+            color="warning"
+            sx={{ m: "20px auto" }}
+          >
+            Post
+          </Button>
         </Box>
       )}
+      {isLoggedIn && isContent && Board}
       {!isLoggedIn && (
         <Box
           sx={{

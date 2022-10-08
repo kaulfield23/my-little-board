@@ -34,7 +34,6 @@ const Navbar = () => {
   useEffect(() => {
     const getUserInfo = async () => {
       if (userId) {
-        console.log("navbar userinfo triggered");
         const res = await fetch(`/api/userInfo?userId=${userId}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -54,7 +53,7 @@ const Navbar = () => {
       <AppBar position="static" sx={{ backgroundColor: "#f89955" }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-            <Link href="/">
+            <Link href={isLoggedIn ? "/posts" : "/"}>
               <Typography
                 noWrap
                 component="a"
