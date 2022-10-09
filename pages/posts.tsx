@@ -8,6 +8,10 @@ import Board from "../src/components/Board";
 const Posts: NextPage = () => {
   const { userId, isLoggedIn } = useContext(LoggedInContext);
   const [isContent, setIsContent] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [send, setSend] = useState(false);
+
   const [userInformation, setUserInformation] = useState({
     firstName: "",
     lastName: "",
@@ -20,6 +24,8 @@ const Posts: NextPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId,
+          title,
+          content,
         }),
       });
       console.log(res.status);
@@ -29,7 +35,11 @@ const Posts: NextPage = () => {
     };
 
     getInfo();
-  }, [userId]);
+  }, [userId, send]);
+
+  const handlePost = async () => {
+    const res = await fetch(`/api/posts`);
+  };
 
   return (
     <>
@@ -54,6 +64,7 @@ const Posts: NextPage = () => {
             label="Title"
             variant="outlined"
             sx={{ backgroundColor: "white" }}
+            onChange={(e) => setTimeout(() => setTitle(e.target.value), 1000)}
           />
           <Typography sx={{ fontFamily: "monospace", fontSize: "1.5rem" }}>
             Content
@@ -62,12 +73,14 @@ const Posts: NextPage = () => {
             aria-label="minimum height"
             minRows={10}
             placeholder="Content"
+            onChange={(e) => setTimeout(() => setContent(e.target.value), 1000)}
           />
           <Button
             type="submit"
             variant="contained"
             color="warning"
             sx={{ m: "20px auto" }}
+            onClick={() => setSend(!send)}
           >
             Post
           </Button>

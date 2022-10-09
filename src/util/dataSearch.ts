@@ -1,5 +1,6 @@
 import { Client, Query } from "ts-postgres";
 import { createPool } from "generic-pool";
+import { DateRange } from "@mui/icons-material";
 
 console.log(process.env.POSTGRES_USER);
 const pool = createPool(
@@ -56,6 +57,23 @@ export const saveAccount = async (
     ]);
     const client = await pool.acquire();
     await client.execute(savingAccountQuery);
+    await pool.release(client);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const savePosts = async (
+  query: string,
+  userId: string,
+  content: string,
+  title: string,
+  date: Date
+) => {
+  try {
+    const savingPostQuery = new Query(query, [userId, content, title, date]);
+    const client = await pool.acquire();
+    await client.execute(savingPostQuery);
     await pool.release(client);
   } catch (err) {
     console.log(err);
