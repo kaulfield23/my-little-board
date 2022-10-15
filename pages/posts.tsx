@@ -12,11 +12,6 @@ const Posts: NextPage = () => {
   const [content, setContent] = useState("");
   const [send, setSend] = useState(false);
 
-  const [userInformation, setUserInformation] = useState({
-    firstName: "",
-    lastName: "",
-  });
-
   useEffect(() => {
     const getInfo = async () => {
       const res = await fetch(`/api/posts`, {
@@ -36,7 +31,7 @@ const Posts: NextPage = () => {
 
     getInfo();
   }, [userId, send]);
-
+  console.log(isContent, "is content")
   const handlePost = async () => {
     const res = await fetch(`/api/posts`);
   };

@@ -26,15 +26,13 @@ export default async function handlePosts(
       if (!postExists?.rows[0][0]) {
         const queryString = `INSERT INTO posts(postid, content, title, date) VALUES($1,$2,$3,$4);`;
         await savePosts(queryString, postid, content, title,currentTime);
-        return res.status(204).end();
-      } else {
         return res.status(200).end();
-      }
+      } 
     } catch (e) {
       console.log(e);
       return res.status(404).end();
     }
   } else {
-    return res.status(401).end();
+    return res.status(204).end();
   }
 }
