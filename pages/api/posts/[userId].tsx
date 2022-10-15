@@ -6,9 +6,9 @@ export default async function userPostHandler(
   res: NextApiResponse
 ) {
   const userId = req.query.userId;
-  const posts = [];
 
   if (req.method === "GET") {
+    const posts = [];
     const searchQuery =
       "SELECT posts.title, posts.content, posts.date FROM posts LEFT JOIN useraccounts ON (posts.postid=useraccounts.userid);";
     const result = await execQuery(searchQuery);

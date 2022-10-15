@@ -93,3 +93,8 @@ export const execQuery = async (query: string) => {
     console.log(err);
   }
 };
+
+// export const checkIfTableExists = async (postid: string) => {
+//   const checkPostQuery = "SELECT EXISTS(SELECT 1 FROM posts WHERE postid=$1)";
+//   return await dataAccountSearch(checkPostQuery, postid);
+// };

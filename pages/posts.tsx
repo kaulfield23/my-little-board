@@ -25,6 +25,7 @@ const Posts: NextPage = () => {
       });
       console.log(res.status);
       if (res.status === 200) {
+        console.log("this should work");
         setIsContent(true);
       }
     };
