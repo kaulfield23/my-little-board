@@ -31,10 +31,6 @@ const Posts: NextPage = () => {
 
     getInfo();
   }, [userId, send]);
-  console.log(isContent, "is content")
-  const handlePost = async () => {
-    const res = await fetch(`/api/posts`);
-  };
 
   return (
     <>
@@ -81,7 +77,7 @@ const Posts: NextPage = () => {
           </Button>
         </Box>
       )}
-      {isLoggedIn && isContent && "hello world"}
+      {isLoggedIn && isContent && <Board/>}
       {!isLoggedIn && (
         <Box
           sx={{

@@ -3,7 +3,7 @@ import {
   dataAccountSearch,
   execQuery,
   savePosts,
-} from "../../src/util/dataSearch";
+} from "../../../src/util/dataSearch";
 
 export default async function handlePosts(
   req: NextApiRequest,
@@ -13,13 +13,18 @@ export default async function handlePosts(
   // const createTableQuery =
   //   "CREATE TABLE IF NOT EXISTS posts(id serial PRIMARY KEY, userId TEXT, content TEXT, title TEXT, date DATE DEFAULT CURRENT_DATE, UNIQUE(userId), CONSTRAINT fk_userId FOREIGN KEY(userId) REFERENCES userAccounts(userId));";
   
-  if(postid && title && content){
+  const checkPostQuery = "SELECT EXISTS(SELECT 1 FROM posts WHERE postid=$1)";
+  const postExists = await dataAccountSearch(checkPostQuery, postid);
+  //when there are posts
+  if(postExists?.rows[0][0]){
+    return res.status(200).end();
+  }
+
+  //when there are title and content for new post
+  if(title && content){
     const createTableQuery = "CREATE TABLE IF NOT EXISTS posts(id SERIAL PRIMARY KEY ,postid TEXT, content TEXT, title TEXT, date DATE NOT NULL DEFAULT CURRENT_DATE, UNIQUE(postid), CONSTRAINT fk_postid FOREIGN KEY(postid) REFERENCES useraccounts(userid));"
     await execQuery(createTableQuery);
-  
-    const checkPostQuery = "SELECT EXISTS(SELECT 1 FROM posts WHERE postid=$1)";
-  
-    const postExists = await dataAccountSearch(checkPostQuery, postid);
+    
     const currentTime = new Date();
    
     try {
