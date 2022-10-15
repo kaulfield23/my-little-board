@@ -23,7 +23,7 @@ const Posts: NextPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId,
+          postid:userId,
           title,
           content,
         }),
@@ -86,7 +86,7 @@ const Posts: NextPage = () => {
           </Button>
         </Box>
       )}
-      {isLoggedIn && isContent && Board}
+      {isLoggedIn && isContent && "hello world"}
       {!isLoggedIn && (
         <Box
           sx={{
