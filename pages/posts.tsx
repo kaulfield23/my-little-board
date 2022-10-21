@@ -11,6 +11,7 @@ const Posts: NextPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [send, setSend] = useState(false);
+  const [boardStatus, setBoardStatus] = useState("initial");
 
   useEffect(() => {
     const getInfo = async () => {
@@ -25,24 +26,28 @@ const Posts: NextPage = () => {
       });
       console.log(res.status);
       if (res.status === 200) {
-        console.log("this should work");
-        setIsContent(true);
+        // setIsContent(true);
+        setBoardStatus("show board");
       }
     };
-
-    getInfo();
-  }, [userId, send]);
+    if (boardStatus === "initial") {
+      getInfo();
+    }
+  }, [userId, boardStatus]);
 
   return (
     <>
-      {isLoggedIn && !isContent && (
+      {isLoggedIn && boardStatus !== "show board" && (
         <PostForm
           setTitle={setTitle}
           setContent={setContent}
           setSend={setSend}
+          setBoardStatus={setBoardStatus}
         />
       )}
-      {isLoggedIn && isContent && <Board />}
+      {isLoggedIn && boardStatus === "show board" && (
+        <Board setBoardStatus={setBoardStatus} />
+      )}
       {!isLoggedIn && (
         <Box
           sx={{

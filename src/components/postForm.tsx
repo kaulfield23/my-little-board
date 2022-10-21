@@ -10,10 +10,14 @@ type PostFormType = {
   setTitle: (value: string) => void;
   setContent: (value: string) => void;
   setSend: (value: boolean) => void;
+  setBoardStatus: (value: string) => void;
 };
-const PostForm: FC<PostFormType> = ({ setTitle, setContent, setSend }) => {
-  const [send, setToSend] = useState(false);
-
+const PostForm: FC<PostFormType> = ({
+  setTitle,
+  setContent,
+  setSend,
+  setBoardStatus,
+}) => {
   return (
     <Box
       sx={{
@@ -52,7 +56,8 @@ const PostForm: FC<PostFormType> = ({ setTitle, setContent, setSend }) => {
         color="warning"
         sx={{ m: "20px auto" }}
         onClick={() => {
-          setSend(!send), setToSend(!send);
+          // setSend(!send), setToSend(!send);
+          setBoardStatus("initial");
         }}
       >
         Post

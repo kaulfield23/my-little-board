@@ -10,7 +10,6 @@ export default async function handlePosts(
   res: NextApiResponse
 ) {
   const { postid, title, content } = req.body;
-  console.log(postid, "should be postid always");
 
   if (postid && title && content) {
     const createTableQuery =

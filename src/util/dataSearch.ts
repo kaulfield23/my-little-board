@@ -1,8 +1,6 @@
 import { Client, Query } from "ts-postgres";
 import { createPool } from "generic-pool";
-import { DateRange } from "@mui/icons-material";
 
-console.log(process.env.POSTGRES_USER);
 const pool = createPool(
   {
     create: async () => {
@@ -93,8 +91,3 @@ export const execQuery = async (query: string) => {
     console.log(err);
   }
 };
-
-// export const checkIfTableExists = async (postid: string) => {
-//   const checkPostQuery = "SELECT EXISTS(SELECT 1 FROM posts WHERE postid=$1)";
-//   return await dataAccountSearch(checkPostQuery, postid);
-// };

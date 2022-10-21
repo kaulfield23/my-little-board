@@ -6,12 +6,17 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { LoggedInContext } from "./context/LoggedInContext";
+import { Fab } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 type DataType = {
   data: ["", "", ""];
 };
+type BoardType = {
+  setBoardStatus: (value: string) => void;
+};
 
-const Board: FC = () => {
+const Board: FC<BoardType> = ({ setBoardStatus }) => {
   const [posts, setPosts] = useState<any>([]);
   const { userAvatarColor, userId } = useContext(LoggedInContext);
 
@@ -55,6 +60,17 @@ const Board: FC = () => {
           </Card>
         );
       })}
+      <Fab
+        size="medium"
+        color="warning"
+        aria-label="add"
+        sx={{ position: "absolute", bottom: 16, right: 16 }}
+        onClick={() => {
+          setBoardStatus("show postform");
+        }}
+      >
+        <AddIcon />
+      </Fab>
     </>
   );
 };
