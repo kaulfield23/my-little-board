@@ -1,32 +1,22 @@
-import { Avatar, Button, TextField, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { NextPage } from "next";
 import React, { useContext, useEffect, useState } from "react";
 import { LoggedInContext } from "../src/components/context/LoggedInContext";
 import Board from "../src/components/Board";
 import PostForm from "../src/components/postForm";
+
 const Posts: NextPage = () => {
   const { userId, isLoggedIn } = useContext(LoggedInContext);
-  const [isContent, setIsContent] = useState(false);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [send, setSend] = useState(false);
   const [boardStatus, setBoardStatus] = useState("initial");
 
   useEffect(() => {
     const getInfo = async () => {
-      const res = await fetch(`/api/posts`, {
-        method: "POST",
+      const res = await fetch(`/api/posts?userid=${userId}`, {
+        method: "GET",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          postid: userId,
-          title,
-          content,
-        }),
       });
-      console.log(res.status);
       if (res.status === 200) {
-        // setIsContent(true);
         setBoardStatus("show board");
       }
     };
@@ -38,12 +28,7 @@ const Posts: NextPage = () => {
   return (
     <>
       {isLoggedIn && boardStatus !== "show board" && (
-        <PostForm
-          setTitle={setTitle}
-          setContent={setContent}
-          setSend={setSend}
-          setBoardStatus={setBoardStatus}
-        />
+        <PostForm setBoardStatus={setBoardStatus} />
       )}
       {isLoggedIn && boardStatus === "show board" && (
         <Board setBoardStatus={setBoardStatus} />

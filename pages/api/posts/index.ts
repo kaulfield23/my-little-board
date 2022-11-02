@@ -10,10 +10,11 @@ export default async function handlePosts(
   res: NextApiResponse
 ) {
   const { postid, title, content } = req.body;
-
-  if (postid && title && content) {
+  const { userid } = req.query;
+  //post the new posts
+  if (postid && title && content && req.method === "POST") {
     const createTableQuery =
-      "CREATE TABLE IF NOT EXISTS posts(id SERIAL PRIMARY KEY ,postid TEXT, content TEXT, title TEXT, date DATE NOT NULL DEFAULT CURRENT_DATE, UNIQUE(postid), CONSTRAINT fk_postid FOREIGN KEY(postid) REFERENCES useraccounts(userid));";
+      "CREATE TABLE IF NOT EXISTS posts(id SERIAL PRIMARY KEY ,postid TEXT, content TEXT, title TEXT, date DATE NOT NULL DEFAULT CURRENT_DATE, CONSTRAINT fk_postid FOREIGN KEY(postid) REFERENCES useraccounts(userid));";
     await execQuery(createTableQuery);
 
     try {
@@ -26,14 +27,14 @@ export default async function handlePosts(
       return res.status(404).end();
     }
 
-    //when user just logged in and there are no contents for upload, check if table exists to show old posts
-  } else if (postid) {
+    //when user just logged in and there are no contents to show on initial page, check if table exists and then show old posts
+  } else if (typeof userid === "string" && req.method === "GET") {
     const createTableQuery =
-      "CREATE TABLE IF NOT EXISTS posts(id SERIAL PRIMARY KEY ,postid TEXT, content TEXT, title TEXT, date DATE NOT NULL DEFAULT CURRENT_DATE, UNIQUE(postid), CONSTRAINT fk_postid FOREIGN KEY(postid) REFERENCES useraccounts(userid));";
+      "CREATE TABLE IF NOT EXISTS posts(id SERIAL PRIMARY KEY ,postid TEXT, content TEXT, title TEXT, date DATE NOT NULL DEFAULT CURRENT_DATE, CONSTRAINT fk_postid FOREIGN KEY(postid) REFERENCES useraccounts(userid));";
     await execQuery(createTableQuery);
 
     const checkPostQuery = "SELECT EXISTS(SELECT 1 FROM posts WHERE postid=$1)";
-    const postExists = await dataAccountSearch(checkPostQuery, postid);
+    const postExists = await dataAccountSearch(checkPostQuery, userid);
 
     if (postExists?.rows[0][0]) {
       return res.status(200).end();
