@@ -1,3 +1,7 @@
+I wanted to test Docker for Postgres and know about relational database.
+
+used Next.js, Material UI, Postgres (with Docker), Generic pool
+
 # Before you test
 - It needs Postgres
 
