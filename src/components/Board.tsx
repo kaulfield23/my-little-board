@@ -10,7 +10,7 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 type DataType = {
-  data: ["", "", ""];
+  data: ["", "", "", ""];
 };
 type BoardType = {
   setBoardStatus: (value: string) => void;
@@ -31,7 +31,6 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
     };
     getPosts();
   }, []);
-
   return (
     <>
       {posts.map((item: DataType, index: number) => {
@@ -52,8 +51,15 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
             />
 
             <CardContent>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ marginBottom: "20px" }}
+              >
                 {item.data[1]}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.data[3]}
               </Typography>
             </CardContent>
             <CardActions disableSpacing></CardActions>
