@@ -30,7 +30,7 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
       setPosts([...postsValue]);
     };
     getPosts();
-  }, []);
+  }, [userId]);
   return (
     <>
       {posts.map((item: DataType, index: number) => {

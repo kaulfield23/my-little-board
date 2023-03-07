@@ -5,37 +5,34 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { LoggedInContext } from "./context/LoggedInContext";
 type PostFormType = {
   setBoardStatus: (value: string) => void;
 };
+
+type PostInfoType = {
+  title:string | undefined;
+  content:string | undefined;
+}
 const PostForm: FC<PostFormType> = ({ setBoardStatus }) => {
   const { userId } = useContext(LoggedInContext);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [sending, setSending] = useState(false);
-
-  useEffect(() => {
-    const postMessages = async () => {
-      const res = await fetch(`/api/posts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          postid: userId,
-          title,
-          content,
-        }),
-      });
-      if (res.status === 200) {
-        setBoardStatus("show board");
-      }
-    };
-
-    if (title && content) {
-      postMessages();
+  const [postInfo, setPostInfo] = useState<PostInfoType>({title:undefined, content:undefined});
+  
+  const postMessages = async () => {
+    const res = await fetch(`/api/posts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        postid: userId,
+        title:postInfo.title,
+        content:postInfo.content,
+      }),
+    });
+    if (res.status === 200) {
+      setBoardStatus("show board");
     }
-  }, [userId, sending]);
+  };
 
   return (
     <Box
@@ -58,7 +55,8 @@ const PostForm: FC<PostFormType> = ({ setBoardStatus }) => {
         label="Title"
         variant="outlined"
         sx={{ backgroundColor: "white" }}
-        onChange={(e) => setTimeout(() => setTitle(e.target.value), 400)}
+        onChange={(e) => setTimeout(() => setPostInfo((prev) => ({...prev, title:e.target.value})), 500)}
+
       />
       <Typography sx={{ fontFamily: "monospace", fontSize: "1.5rem" }}>
         Content
@@ -67,7 +65,7 @@ const PostForm: FC<PostFormType> = ({ setBoardStatus }) => {
         aria-label="minimum height"
         minRows={10}
         placeholder="Content"
-        onChange={(e) => setTimeout(() => setContent(e.target.value), 400)}
+        onChange={(e) => setTimeout(() => setPostInfo((prev) => ({...prev, content:e.target.value})), 500)}
       />
       <Button
         type="submit"
@@ -75,7 +73,7 @@ const PostForm: FC<PostFormType> = ({ setBoardStatus }) => {
         color="warning"
         sx={{ m: "20px auto" }}
         onClick={() => {
-          setSending(!sending);
+          if (postInfo.title && postInfo.content) postMessages();
         }}
       >
         Post
