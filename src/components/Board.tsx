@@ -10,8 +10,10 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 type DataType = {
-  data: string[];
-  names: string[];
+  title:string;
+  date:string;
+  writer:string;
+  content:string;
 };
 
 type BoardType = {
@@ -37,7 +39,7 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
   return (
     <>
       {posts?.map((item: DataType, index: number) => {
-        let postDate = item.data[2].split("T");
+        let postDate = item.date.split("T");
         return (
           <Card sx={{ maxWidth: 345, margin: "100px auto" }} key={index}>
             <CardHeader
@@ -49,7 +51,7 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
                   {userId.charAt(0)}
                 </Avatar>
               }
-              title={item.data[0]}
+              title={item.title}
               subheader={postDate[0]}
             />
 
@@ -59,10 +61,10 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
                 color="text.secondary"
                 sx={{ marginBottom: "20px" }}
               >
-                {item.data[1]}
+                {item.content}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {item.data[3]}
+                {item.writer}
               </Typography>
             </CardContent>
             <CardActions disableSpacing></CardActions>
