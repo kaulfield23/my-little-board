@@ -4,21 +4,18 @@ import {
   Toolbar,
   Tooltip,
   Typography,
-  useRadioGroup,
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { LoggedInContext } from "./context/LoggedInContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
-  const { isLoggedIn, userId, changeLoggedInState, userAvatarColor } =
-    useContext(LoggedInContext);
-  const [avatarColor, setAvatarColor] = useState("");
-
+  const { isLoggedIn, userId, changeLoggedInState, userAvatarColor } = useContext(LoggedInContext);
   const router = useRouter();
+
   const handleLogOut = async () => {
     const res = await fetch("/api/logout", {
       method: "POST",
@@ -31,6 +28,7 @@ const Navbar = () => {
       alert("log out error! try again");
     }
   };
+  
   useEffect(() => {
     const getUserInfo = async () => {
       if (userId) {

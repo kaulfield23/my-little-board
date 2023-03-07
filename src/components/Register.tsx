@@ -3,7 +3,6 @@ import {
   AlertTitle,
   Box,
   Button,
-  FormGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -22,51 +21,41 @@ type RegisterType = {
 };
 
 const Register: FC<RegisterType> = ({ handleBack }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [userId, setUserId] = useState("");
+  const [userInfo, setUserInfo] = useState({ userId: "", userPassword: "", firstName: "", lastName: "", })
   const [msg, setMsg] = useState("");
 
-  const randomColors = [
-    "#dd7773",
-    "#d16282",
-    "#b95694",
-    "#9152a5",
-    "#5154b0",
-    "#78b171",
-    "#4452c6",
-    "#ff868f",
-    "#a19ae4",
-    "#00bdae",
-  ];
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    const avatar = randomColors[Math.floor(Math.random() * 10)];
-
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    const avatar = `#${randomColor}`
+   
     const res = await fetch(`/api/userAccount`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        userId,
-        userPassword,
-        firstName,
-        lastName,
+        userId: userInfo.userId,
+        userPassword: userInfo.userPassword,
+        firstName: userInfo.firstName,
+        lastName: userInfo.lastName,
         avatar,
       }),
     });
+    
     if (res.status === 409) {
       setMsg("sameId");
       const timer = setTimeout(() => {
         setMsg("");
       }, 5000);
-    } else if (res.status === 200) {
+      clearTimeout(timer);
+    }
+    if (res.status === 200) {
       setMsg("accepted");
     } else {
       throw new Error("error");
     }
   };
+  
   return (
     <>
       {msg === "sameId" && (
@@ -87,7 +76,6 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
           handleBack(true);
         }}
       />
-
       <Box
         sx={{
           margin: { xs: "100px 0 0 0", md: "70px 0 0 0" },
@@ -129,7 +117,7 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
               color="warning"
               sx={{ mb: 1, width: { xs: "280px", md: "500px" } }}
               onChange={(e) => {
-                setUserId(e.target.value);
+                setUserInfo((prev) => ({ ...prev, userId: e.target.value }));
               }}
               required
             />
@@ -138,7 +126,7 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
               label="Password"
               color="warning"
               onChange={(e) => {
-                setUserPassword(e.target.value);
+                setUserInfo((prev) => ({ ...prev, userPassword: e.target.value }));
               }}
               required
             />
@@ -149,7 +137,8 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
               color="success"
               sx={{ mb: 1 }}
               onChange={(e) => {
-                setFirstName(e.target.value);
+                setUserInfo((prev) => ({ ...prev, firstName: e.target.value }));
+
               }}
               required
             />
@@ -159,7 +148,7 @@ const Register: FC<RegisterType> = ({ handleBack }) => {
               color="success"
               required
               onChange={(e) => {
-                setLastName(e.target.value);
+                setUserInfo((prev) => ({ ...prev, lastName: e.target.value }));
               }}
             />
             <Button
