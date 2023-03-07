@@ -10,14 +10,16 @@ import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 type DataType = {
-  data: ["", "", "", ""];
+  data: string[];
+  names: string[];
 };
+
 type BoardType = {
   setBoardStatus: (value: string) => void;
 };
 
 const Board: FC<BoardType> = ({ setBoardStatus }) => {
-  const [posts, setPosts] = useState<any>([]);
+  const [posts, setPosts] = useState<DataType[]>();
   const { userAvatarColor, userId } = useContext(LoggedInContext);
 
   useEffect(() => {
@@ -26,14 +28,15 @@ const Board: FC<BoardType> = ({ setBoardStatus }) => {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
-      const postsValue = await res.json();
+      const postsValue = (await res.json()) as DataType[];
       setPosts([...postsValue]);
     };
     getPosts();
   }, [userId]);
+
   return (
     <>
-      {posts.map((item: DataType, index: number) => {
+      {posts?.map((item: DataType, index: number) => {
         let postDate = item.data[2].split("T");
         return (
           <Card sx={{ maxWidth: 345, margin: "100px auto" }} key={index}>
